@@ -1,0 +1,80 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<dom-module id="tree-item">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+      }
+      .actions {
+        opacity: 0;
+      }
+      :host([hover]) .actions {
+        opacity: 1;
+      }
+    </style>
+    <span>[[name]]</span>
+
+    <template is="dom-if" if="[[value]]">
+      <span>[[value]]</span>
+      <span class="actions">
+        <iron-icon icon="add" id="add" on-tap="_tapHandler"></iron-icon>
+        <template is="dom-if" if="[[value]]" restamp="true">
+          <iron-icon icon="clear" id="remove" on-tap="_tapHandler"></iron-icon>
+        </template>
+      </span>
+    </template>
+
+    <template is="dom-if" if="[[!value]]">
+      :{
+        <span class="actions">
+          <iron-icon icon="add" id="add" on-tap="_tapHandler"></iron-icon>
+          <template is="dom-if" if="[[value]]" restamp="true">
+            <iron-icon icon="clear" id="remove" on-tap="_tapHandler"></iron-icon>
+          </template>
+        </span>
+        <content></content>
+      }
+    </template>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'tree-item',
+
+        properties: {
+          name: String,
+          value: {
+            type: String,
+            value: null
+          },
+          hover: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true
+          }
+        },
+
+        listeners: {
+          mouseover: 'onMouseOver',
+          mouseout: 'onMouseOut'
+        },
+
+        onMouseOver: function(event) {
+          this.set('hover', true);
+        },
+
+        onMouseOut: function(event) {
+          this.set('hover', false);
+        },
+
+        _tapHandler: function(event) {
+          var target = Polymer.dom(event).rootTarget;
+          this.fire(target.id);
+        }
+      });
+    })();
+  </script>
+</dom-module>

@@ -1,0 +1,63 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<dom-module id="designer-view">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex: 1 1 auto;
+        /*display: block;*/
+        width: 100%;
+        height: 100%;
+        background: #eee;
+      }
+    </style>
+
+    <span class="designer-grid" droppable="true">
+      <div class="drag" draggable="true">
+        drag item
+      </div>
+    </span>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'designer-view',
+
+        hostAttributes: {
+          droppable: 'true'
+        },
+
+        get designer() {
+          return this.$$('.designer-grid');
+        },
+
+        listeners: {
+          drag: 'onDrag',
+          drop: 'onDrop',
+          dragover: '_preventDefault'
+        },
+
+        onDrag: function(event) {
+          this.dragEl = event.target;
+          // console.log(event);
+          // this.designer.dropable = true;
+        },
+
+        onDrop: function(event) {
+          var x = event.x;
+          var y = event.y;
+          this.dragEl.x = x;
+          console.log();
+          // this.designer.dropable = true;
+        },
+
+        _preventDefault: function (event) {
+          event.stopPropagation();
+          event.preventDefault();
+        }
+      });
+    })();
+  </script>
+</dom-module>

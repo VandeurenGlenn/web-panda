@@ -1,0 +1,163 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../tree-elements/tree-item.html">
+<link rel="import" href="property-tree.html">
+<link rel="import" href="../bower_components/juicy-jsoneditor/juicy-jsoneditor.html">
+<dom-module id="properties-tree">
+  <template>
+    <style>
+      :host {
+        display: block;
+        color: var(--primary-text-color);
+        width: 100%;
+        height: 100%;
+      }
+      /*juicy-jsoneditor {
+        height: 100%;
+        position: absolute;
+        width: 100%;
+      }*/
+      juicy-jsoneditor ::content .jsoneditor-menu {
+        background-color: rgba(0, 0, 0, 0.12) !important;
+        color: rgba(0, 0, 0, 0.88) !important;
+      }
+    </style>
+    <tree-item name="properties" on-add="_onPropertyAdd">
+      <template id="list" is="dom-repeat" as="property">
+        <property-tree property="[[property]]" editing="[[editMode]]" parent></property-tree>
+      </template>
+    </tree-item>
+
+    <!-- <wp-edit-state editing="{{editMode}}"></wp-edit-state> -->
+    <!-- <juicy-jsoneditor name="properties" json="{{items}}" modes='["tree", "form", "text"]' history type-disabled child-type-disabled></juicy-jsoneditor> -->
+  </template>
+  <script>
+    (function() {
+      'use strict';
+      var titles = {
+        array: 'Array',
+        object: 'Object',
+        string: 'String',
+        boolean: 'Boolean',
+        htmlElement: 'HTMLElement'
+      };
+
+      Polymer({
+        is: 'properties-tree',
+
+        properties: {
+          items: {
+            type: Object,
+            observer: '_itemsChanged'
+          },
+
+          _properties: {
+            type: Array,
+            value: []
+          },
+
+          _items: {
+            type: Object
+          },
+
+          customTypeItems: {
+            type: Object,
+            value: function() {
+              return {
+                text: 'Type',
+                title: 'Change the type of this field',
+                className: 'jsoneditor-type',
+                submenu: [
+                  {
+                    text: 'Array',
+                    className: 'jsoneditor-type-array',
+                    title: titles.array,
+                    click: function () {
+                      this.fire('property-type-change');
+                      this._setPropertyType('array');
+                    }.bind(this)
+                  },
+                  {
+                    text: 'Object',
+                    className: 'jsoneditor-type-object',
+                    title: titles.object,
+                    click: function () {
+                      this._setPropertyType('object');
+                    }.bind(this)
+                  },
+                  {
+                    text: 'String',
+                    className: 'jsoneditor-type-string',
+                    title: titles.string,
+                    click: function () {
+                      this._setPropertyType('string');
+                    }.bind(this)
+                  },
+                  {
+                    text: 'boolean',
+                    className: 'jsoneditor-type-boolean',
+                    title: titles.boolean,
+                    click: function () {
+                      this._setPropertyType('boolean');
+                    }.bind(this)
+                  },
+                  {
+                    text: 'htmlElement',
+                    className: 'jsoneditor-type-boolean',
+                    title: titles.htmlElement,
+                    click: function () {
+                      this._setPropertyType('htmlElement');
+                    }.bind(this)
+                  }
+                ]
+              };
+            }
+          }
+        },
+
+        listeners: {
+          'on-close-context-menu': '_setPropertyType'
+        },
+
+        get _repeatElement() {
+          return Polymer.dom(this.root).querySelector('#list');
+        },
+
+        _itemsChanged: function(obj) {
+          this._items = obj;
+          if (Object.keys(obj).length) {
+            var properties = Array;
+            for (var property in obj) {
+              console.log(property);
+              if (obj.hasOwnProperty(property)) {
+                properties.push({property: obj[property]});
+              }
+              console.log(property);
+            }
+            this.set('_properties', properties);
+          }
+        },
+
+        _onPropertyAdd: function() {
+          var properties = this._properties;
+          var defaultPropery = {
+            'prop1': 'String'
+          };
+          properties.push(defaultPropery);
+          this.set('_properties', properties);
+          this._repeatElement.items = properties;
+        },
+
+
+
+        _setPropertyType: function(type) {
+          var node = event.node || null;
+          console.log(event);
+          // if (node) {
+            this.querySelector('juicy-jsoneditor').editor.node._onChangeType(type)
+          // }
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

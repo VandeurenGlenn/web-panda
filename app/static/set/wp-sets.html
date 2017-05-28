@@ -1,0 +1,41 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<dom-module id="wp-sets">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'wp-sets',
+
+        properties: {
+          sets: {
+            type: Array,
+            observer: '_setsChanged'
+          },
+          data: Array
+        },
+
+        _setsChanged: function(sets) {
+          fetch(this.resolveUrl('../catalog.json')).then(response => {
+            return response.json();
+          }).then(set => {
+            packages.forEach(set => {
+              console.log(set.name);
+            })
+            sets.forEach(set => {
+              console.log(set);
+            })
+          })
+        }
+      });
+    })();
+  </script>
+</dom-module>

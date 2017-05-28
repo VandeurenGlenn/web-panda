@@ -1,0 +1,23 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<dom-module id="wp-header">
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+      }
+    </style>
+
+    <content select="wp-toolbar, [toolbar]"></content>
+
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'wp-header'
+      });
+    })();
+  </script>
+</dom-module>

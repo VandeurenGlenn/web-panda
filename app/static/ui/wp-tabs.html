@@ -1,0 +1,46 @@
+<link rel="import" href="../bower_components/polymer/polymer-mini.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="wp-tab.html">
+
+<dom-module id="wp-tabs">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex: 1;
+        height: 48px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      iron-selector {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+      }
+    </style>
+    <iron-selector selected="{{selected}}" attr-for-selected="[[attrForSelected]]">
+      <content select="wp-tab, [tab]"></content>
+    </iron-selector>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'wp-tabs',
+
+        properties: {
+          attrForSelected: {
+            type: String,
+            value: 'name'
+          },
+
+          selected: {
+            type: String,
+            notify: true
+          }
+        }
+      });
+    })();
+  </script>
+</dom-module>

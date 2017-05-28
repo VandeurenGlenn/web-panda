@@ -1,0 +1,35 @@
+{
+  "name": "webpanda",
+  "description": "webapp/site designer",
+  "main": "index.js",
+  "authors": [
+    "Glenn Vandeuren <vandeurenglenn@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "^1.6.1",
+    "paper-styles": "^1.1.4",
+    "iron-iconset-svg": "^1.0.9",
+    "iron-icon": "^1.0.10",
+    "iron-selector": "^1.5.2",
+    "iron-dropdown": "^1.5.1",
+    "paper-menu": "^1.2.2",
+    "paper-item": "^1.2.1",
+    "ace-builds": "ajaxorg/ace-builds#^1.2.5",
+    "app-route": "PolymerElements/app-route#^0.9.2",
+    "iron-pages": "^1.0.8",
+    "ace": "^1.2.5",
+    "paper-fab": "^1.2.0",
+    "editable-content": "vandeurenglenn/editable-content#^1.2.2",
+    "paper-input": "^1.1.17",
+    "juicy-jsoneditor": "^1.1.0"
+  }
+}

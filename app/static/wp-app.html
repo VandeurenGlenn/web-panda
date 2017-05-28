@@ -1,0 +1,98 @@
+<link rel="import" href="bower_components/polymer/polymer-mini.html">
+<link rel="import" href="bower_components/app-route/app-location.html">
+<link rel="import" href="bower_components/app-route/app-route.html">
+<link rel="import" href="bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="styles/theme.html">
+<link rel="import" href="set/wp-sets.html">
+<link rel="import" href="ui/wp-drawer-panel-layout.html">
+<link rel="import" href="ui/wp-header.html">
+<link rel="import" href="ui/wp-toolbar.html">
+<link rel="import" href="ui/wp-drawer.html">
+<link rel="import" href="ui/wp-icon-button.html">
+
+<link rel="import" href="inspectors/element-inspector.html">
+
+<dom-module id="wp-app">
+  <template>
+    <style>
+      :host {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow-x: hidden;
+      }
+      iron-pages {
+        height: 100%;
+      }
+    </style>
+    <!-- routing -->
+    <app-location route="{{route}}"></app-location>
+    <app-route
+        route="{{route}}"
+        pattern=":page"
+        data="{{routeData}}"
+        tail="{{subroute}}"></app-route>
+
+    <wp-drawer-panel-layout drawer-right>
+      <wp-header>
+        <wp-toolbar><wp-icon-button icon="code" toolbar-content on-tap="toggleView"></wp-icon-button></wp-toolbar>
+      </wp-header>
+      <wp-drawer>
+        <element-inspector project="{{project}}" set-items="[[setItems]]"></element-inspector>
+      </wp-drawer>
+      <iron-pages selected="[[page]]" attr-for-selected="name">
+        <designer-view name="designer"></designer-view>
+        <code-view name="code" project="[[project]]"></code-view>
+      </iron-pages>
+    </wp-drawer-panel-layout>
+
+    <wp-sets data="{{setItems}}" sets='["paper", "iron"]'></wp-sets>
+    <template-loader type="[[project.type]]"></template-loader>
+    <project-handler project="[[project]]" document="[[document]]"></project-handler>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'wp-app',
+
+        properties: {
+          page: {
+            type: String,
+            reflectToAttribute: true,
+            observer: '_pageChanged'
+          },
+
+          toggled: {
+            type: Boolean,
+            value: false
+          }
+        },
+
+        observers: [
+          '_routePageChanged(routeData.page)'
+        ],
+
+        _routePageChanged: function(page) {
+          this.page = page || 'designer';
+        },
+
+        _pageChanged: function(page) {
+          // load page import on demand.
+          // window.webpanda.view =
+          this.importHref(
+            this.resolveUrl('views/' + page + '-view.html'), null, null, true);
+        },
+
+        toggleView: function() {
+          var page = this._toggled ? 'designer' : 'code';
+          this.page = page;
+          this._toggled = !this._toggled;
+        }
+      });
+    })();
+  </script>
+</dom-module>

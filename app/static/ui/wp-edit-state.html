@@ -1,0 +1,49 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<dom-module id="wp-edit-state">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+      }
+      iron-icon {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+      }
+    </style>
+
+    <template is="dom-if" if="[[editing]]">
+      <iron-icon icon="save"></iron-icon>
+    </template>
+
+    <template is="dom-if" if="[[!editing]]">
+      <iron-icon icon="edit"></iron-icon>
+    </template>
+
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'wp-edit-state',
+
+        properties: {
+          editing: {
+            type: Boolean,
+            notify: true,
+            value: false
+          }
+        },
+
+        listeners: {
+          tap: '_tapHandler'
+        },
+
+        _tapHandler: function() {
+          this.editing = !this.editing;
+        }
+      });
+    })();
+  </script>
+</dom-module>

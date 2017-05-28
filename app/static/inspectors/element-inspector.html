@@ -1,0 +1,124 @@
+<link rel="import" href="../bower_components/polymer/polymer-mini.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../ui/wp-toolbar.html">
+<link rel="import" href="../ui/wp-dropdown-menu.html">
+<link rel="import" href="../ui/wp-tabs.html">
+<link rel="import" href="../property-elements/properties-tree.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<dom-module id="element-inspector">
+  <template>
+    <style>
+      :host {
+        display: block;
+        flex: 1;
+      }
+      wp-toolbar.tabs-container {
+        padding: 0 16px;
+        align-items: flex-end;
+      }
+      .container {
+        padding: 8px 16px;
+      }
+      paper-item {
+        min-width: 128px;
+        max-width: 256px;
+      }
+      paper-fab {
+        position: fixed;
+        bottom: 42px;
+        right: 42px;
+      }
+      .new-property {
+      }
+    </style>
+    <wp-toolbar>
+      <span toolbar-content>
+        <h2>[[project.name]]</h2>
+      </span>
+      <span toolbar-actions>
+        <wp-dropdown-menu selected="{{selected}}" attr-for-selected="name">
+          <paper-item name="add-property" role="menuitem">add property</paper-item>
+          <paper-item name="settings" role="menuitem">project settings</paper-item>
+        </wp-dropdown-menu>
+      </span>
+    </wp-toolbar>
+      <wp-toolbar class="tabs-container">
+        <wp-tabs toolbar-content selected="{{selected}}">
+          <wp-tab name="properties">PROPERTIES</wp-tab>
+          <wp-tab name="styles">STYLES</wp-tab>
+          <wp-tab name="tree">TREE</wp-tab>
+          <wp-tab name="sets">CATALOG</wp-tab>
+        </wp-tabs>
+      </wp-toolbar>
+    <iron-pages selected="[[selected]]" attr-for-selected="name">
+      <section name="properties">
+        <properties-tree items="{{project.properties}}"></properties-tree>
+        <div class="container">
+
+          <template is="dom-if" if="[[_computeHasProperties(project.properties)]]">
+
+          </template>
+        </div>
+      </section>
+
+      <section name="settings">
+        <wp-toolbar>
+          <h3 toolbar-content>Settings</h3>
+          <wp-icon-button icon="close" circle toolbar-actions></wp-icon-button>
+        </wp-toolbar>
+        <div>type: [[project.type]]</div>
+        <div>name: [[project.name]]</div>
+      </section>
+
+      <section name="sets">
+        <template is="dom-repeat" items="[[setItems]]" index-as="index">
+          
+        </template>
+      </section>
+    </iron-pages>
+
+    <paper-fab icon="add" on-tap="addProperty"></paper-fab>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'element-inspector',
+
+        properties: {
+          project: {
+            type: Object,
+            notify: true,
+            value: function() {
+              return {
+                name: 'wp-element',
+                type: 'polymer-element',
+                properties: {},
+                styles: {
+                  ':host': {display: 'flex'}
+                },
+              }
+            }
+          },
+
+          selected: {
+            type: String,
+            value: 'properties'
+          }
+        },
+
+        _computeHasProperties: function(element) {
+          if (element.properties) {
+            return true;
+          }
+          return false;
+        },
+
+        addProperty: function() {
+          window.webPanda.project.addProperty(this);
+        }
+      });
+    })();
+  </script>
+</dom-module>

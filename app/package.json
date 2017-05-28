@@ -1,0 +1,6 @@
+{
+  "name": "webpanda",
+  "version": "0.0.0",
+  "description": "webapp/site designer",
+  "main": "index.js"
+}

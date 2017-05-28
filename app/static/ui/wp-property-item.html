@@ -1,0 +1,39 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<dom-module id="wp-property-item">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex-direction: column;
+      }
+    </style>
+    <span>
+      <label for="name='property-name'">name</label>
+      <content select="[name='property-name']"></content>
+    </span>
+    <span>
+      <label for="name='property-value'">value</label>
+      <content select="[name='property-value']"></content>
+    </span>
+    <span>
+      <label for="name='property-type'">type</label>
+      <content select="[name='property-type']"></content>
+    </span>
+
+    <content select="[name='observer']"></content>
+    <content select="[name='reflectToAttribute']"></content>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'wp-property-item',
+
+        properties: {
+          items: Arra,
+        }
+      });
+    })();
+  </script>
+</dom-module>

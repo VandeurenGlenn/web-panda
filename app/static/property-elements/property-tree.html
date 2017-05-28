@@ -1,0 +1,159 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="property-tree-item.html">
+<link rel="import" href="../ui/wp-edit-state.html">
+<dom-module id="property-tree">
+  <template>
+    <style>
+      :host {
+        display: block;
+        padding: 6px;
+        color: var(--primary-text-color);
+      }
+      span {
+        font-size: 22px;
+        font-weight: 400;
+      }
+      .actions, wp-edit-state {
+        opacity: 0;
+      }
+      :host([editing]) .actions, :host([hover]) wp-edit-state {
+        opacity: 1;
+      }
+      iron-icon {
+        height: 18px;
+        width: 18px;
+      }
+      :host:not([parent]) iron-icon {
+        margin-left: 8px;
+      }
+      #add {
+        color: green;
+      }
+      #remove {
+        color: red;
+      }
+    </style>
+    <!-- <template is="dom-if" if="[[!name]]"> -->
+      <!-- <template is="dom-if" if="[[propertyType]]"> -->
+      <property-tree-item name="{{propertyName}}" value="{{propertyType}}" children="[[propertyChildrenSet]]" on-change="saveChanges" edit-mode="[[editing]]"></property-tree-item>
+      <!-- </template> -->
+      <template is="dom-if" if="[[!propertyType]]">
+        &lbrace;
+      </template>
+      <span class="actions">
+        <iron-icon icon="add" id="add" on-tap="_tapHandler"></iron-icon>
+        <iron-icon icon="clear" id="remove" on-tap="_tapHandler"></iron-icon>
+      </span>
+      <template is="dom-if" if="[[!propertyType]]" on-dom-change="handlePrototypeChildren">
+          <template id="list" is="dom-repeat" index-as="index">
+            <property-tree-item type="[[item.type]]" name="[[item.name]]" value="[[item.value]]"></property-tree-item>
+          </template>
+        &rbrace;
+      </template>
+    <!-- </template> -->
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'property-tree',
+
+        properties: {
+          property: {
+            type: Object,
+            observer: '___propertyChanged'
+          },
+
+          parent: {
+            type: Boolean,
+            value: false
+          },
+
+          propertyType: {
+            type: String,
+            notify: true,
+            value: null
+          },
+
+          hover: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true
+          },
+
+          editMode: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true
+          }
+        },
+
+        get _repeatElement() {
+          return Polymer.dom(this.root).querySelector('#list');
+        },
+
+        observers: [
+          'saveChanges(propertyName, propertyType)'
+        ],
+
+        listeners: {
+          mouseover: 'onMouseOver',
+          mouseout: 'onMouseOut'
+        },
+
+        onMouseOver: function(event) {
+          this.set('hover', true);
+        },
+
+        onMouseOut: function(event) {
+          this.set('hover', false);
+        },
+
+        _tapHandler: function(event) {
+          var target = Polymer.dom(event).rootTarget;
+          this.fire(target.id);
+        },
+
+        saveChanges: function(name, type) {
+          console.log(name, type);
+        },
+
+        ___propertyChanged: function(property) {
+          console.log(Object.keys(property).length);
+          if (Object.keys(property).length) {
+            var _items = [];
+            for (var prop in property) {
+              if (property.hasOwnProperty(prop)) {
+                console.log(prop);
+                this.propertyName = prop;
+                if (typeof property[prop] === 'object') {
+                  // add child to the propertyChildrenSet Array
+                  this._updatePropertyChildren(property[prop]);
+                } else {
+                  this.propertyType = property[prop];
+                }
+                _items.push(property[prop]);
+              }
+            }
+
+          }
+        },
+
+        handlePrototypeChildren: function() {
+          if (this.propertyChildrenSet && this.propertyChildrenSet.length) {
+            this._repeatElement.items = this.propertyChildrenSet;
+          }
+        },
+
+        _updatePropertyChildren: function(property) {
+          if (!this.propertyChildrenSet) {
+            this.propertyChildrenSet = [];
+          }
+          this.push('propertyChildrenSet', property);
+        }
+
+      });
+    })();
+  </script>
+</dom-module>

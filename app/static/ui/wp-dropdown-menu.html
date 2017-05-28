@@ -1,0 +1,62 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-dropdown/iron-dropdown.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="wp-icon-button.html">
+<dom-module id="wp-dropdown-menu">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      iron-dropdown {
+        background-color: var(--secondary-background-color);
+        @apply(--shadow-elevation-2dp);
+        cursor: default;
+      }
+      ::content paper-item, ::content [item] {
+        cursor: pointer;
+      }
+    </style>
+    <wp-icon-button icon="more-vert" on-tap="_toggleDropdown"></wp-icon-button>
+    <iron-dropdown opened="{{dropdownOpen}}" horizontal-align="right">
+      <paper-menu class="dropdown-content" selected="{{selected}}" attr-for-selected="[[attrForSelected]]">
+        <content></content>
+      </paper-menu>
+    </iron-dropdown>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'wp-dropdown-menu',
+
+        properties: {
+          dropdownOpen: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true
+          },
+
+          attrForSelected: {
+            type: String,
+            value: 'name'
+          },
+
+          selected: {
+            type: String,
+            notify: true
+          }
+        },
+
+        get _menuButton() {
+          return Polymer.dom(this).querySelector('wp-icon-button');
+        },
+
+        _toggleDropdown: function() {
+          this.dropdownOpen = !this.dropdownOpen;
+        }
+      });
+    })();
+  </script>
+</dom-module>

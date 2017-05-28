@@ -1,0 +1,84 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<dom-module id="tree-action-submenu">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+        pointer-events: auto;
+      }
+      iron-icon {
+        height: 18px;
+        width: 18px;
+        cursor: pointer;
+      }
+      .action-submenu {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      :host([opened]) .action-submenu {
+        opacity: 1;
+        width: auto;
+        height: auto;
+        min-width: 128px;
+        max-width: 256px;
+
+      }
+      :host([opened]) .container {
+        pointer-events: auto;
+      }
+      :host([opened]) .backdrop {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        pointer-events: auto;
+      }
+    </style>
+
+    <iron-icon icon="chevron-right" on-tap="toggleOpened"></iron-icon>
+    <div class="action-submenu">
+      <div class="action-submenu">
+        <template is="dom-repeat" items="[[item.submenu]]">
+          <paper-item>[[item.action]]</paper-item>
+        </template>
+      </div>
+    </div>
+
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'tree-action-submenu',
+
+        properties: {
+          opened: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true
+          },
+          submenuOpened: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true
+          },
+          items: {
+            type: Array,
+            value: []
+          }
+        },
+
+        toggleOpened: function() {
+          this.opened = !this.opened;
+        },
+
+        toggleSubMenuOpened: function() {
+          this.submenuOpened = !this.submenuOpened;
+        }
+      });
+    })();
+  </script>
+</dom-module>

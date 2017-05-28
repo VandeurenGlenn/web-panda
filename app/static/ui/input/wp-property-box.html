@@ -1,0 +1,46 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../wp-select.html">
+<link rel="import" href="../wp-property-item.html">
+<link rel="import" href="wp-input.html">
+<dom-module id="wp-property-box">
+  <template>
+    <style>
+      :host {
+        display: block;
+        @apply(--shadow-elevation-2dp);
+        padding: 8px 16px;
+        box-sizing: border-box;
+      }
+    </style>
+    <!-- <div class="property-container"> -->
+      <wp-property-item property={{property}}>
+        name:
+        <wp-input type="text" name="property-name" value="{{property.name::change}}"></wp-input>
+        value:
+        <wp-input type="text" name="property-value" value="{{property.value::change}}"></wp-input>
+        type: <wp-select label="type" items='["Number", "String", "Object", "Array", "HTMLElement"]'></wp-select>
+      </wp-property-item>
+      <!-- <paper-button raised>options</paper-button> -->
+    <!-- </div> -->
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'wp-property-box',
+
+        properties: {
+          value: Object,
+          property: {
+            type: Object,
+            notify: true,
+            value: function() {
+              return {name: '', value: ''}
+            }
+          }
+        }
+      });
+    })();
+  </script>
+</dom-module>

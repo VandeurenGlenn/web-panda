@@ -1,0 +1,34 @@
+{
+  "main": "app/index.js",
+  "scripts": {
+    "install": "cd app && bower install && cd ../",
+    "build": "rollup --config rollup.config.js",
+    "start": "electron ./app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vandeurenglenn/webpanda.git"
+  },
+  "keywords": [
+    "designer",
+    "web",
+    "creator",
+    "app",
+    "maker"
+  ],
+  "author": "Glenn Vandeuren <vandeurenglenn@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vandeurenglenn/webpanda/issues"
+  },
+  "homepage": "https://github.com/vandeurenglenn/webpanda#readme",
+  "devDependencies": {
+    "babel-preset-es2015-rollup": "^1.2.0",
+    "electron": "^1.3.3",
+    "rollup-plugin-babel": "^2.6.1"
+  },
+  "dependencies": {
+    "rollup-plugin-json": "^2.0.1"
+  }
+}

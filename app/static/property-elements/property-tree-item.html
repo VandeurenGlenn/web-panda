@@ -1,0 +1,146 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/editable-content/editable-content.html">
+<link rel="import" href="../tree-elements/tree-action-menu.html">
+<dom-module id="property-tree-item">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        width: 100%;
+      }
+      .edit-box {
+        padding: 0 8px;
+      }
+      :host([hover]) .edit-box {
+        display: block;
+        box-sizing: border-box;
+        @apply(--shadow-elevation-2dp)
+      }
+      .name {
+        padding-right: 18px;
+      }
+      .name, .value {
+        font-size: 20px;
+        color: var(--secondary-text-color);
+      }
+      input {
+        outline: none;
+        border: none;
+        max-width: 92px;
+      }
+    </style>
+    <!-- <div class="container"> -->
+      <tree-action-menu items="[[actionMenuItems]]"></tree-action-menu>
+      <editable-content content="{{name}}" suffix=":" edit-mode="[[editMode]]"></editable-content>
+
+      <template is="dom-if" if="[[_computeHasChildren(children)]]">
+        <template is="dom-repeat" items="[[children]]">
+          <property-tree-item name="[[item.name]]" value="[[item.value]]" type="[[item.type]]"></property-tree-item>
+        </template>
+      </template>
+
+      <template is="dom-if" if="[[!_computeHasChildren(children)]]">
+        <editable-content content="{{value}}" edit-mode="[[editMode]]"></editable-content>
+      </template>
+    <!-- </div> -->
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      var actionMenuItems = [{
+        action: 'type',
+        title: 'Change the type to String, Boolean, Object, Array or HTMLElement',
+        submenu: [{
+          action: 'type-string',
+          name: 'String',
+          title: 'Changes current type to String'
+        },{
+          action: 'type-boolean',
+          name: 'Boolean',
+          title: 'Changes current type to Boolean'
+        },{
+          action: 'type-object',
+          name: 'Object',
+          title: 'Changes current type to Object'
+        },{
+          action: 'type-array',
+          name: 'Array',
+          title: 'Changes current type to Array'
+        },{
+          action: 'type-html-element',
+          name: 'HTMLElement',
+          title: 'Changes current type to HTMLElement'
+        }]
+      },{
+        action: 'insert',
+        title: 'Insert a new String, Boolean, Object, Array or HTMLElement',
+        submenu: [{
+          action: 'insert-string',
+          name: 'String',
+          title: 'Inserts a new String'
+        },{
+          action: 'insert-boolean',
+          name: 'Boolean',
+          title: 'Inserts a new Boolean'
+        },{
+          action: 'insert-object',
+          name: 'Object',
+          title: 'Inserts a new Object'
+        },{
+          action: 'insert-array',
+          name: 'Array',
+          title: 'Inserts a new Array'
+        },{
+          action: 'insert-html-element',
+          name: 'HTMLElement',
+          title: 'Inserts a new HTMLElement'
+        }]
+      }];
+
+      Polymer({
+        is: 'property-tree-item',
+
+        properties: {
+          name: String,
+          value: {
+            type: String,
+            notify: true,
+            value: null
+          },
+          hover: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true
+          },
+
+          children: {
+            type: Array,
+            value: []
+          },
+
+          editMode: {
+            type: Boolean,
+            value: false
+          },
+
+          actionMenuItems: {
+            type: Array,
+            value: function() {
+              return actionMenuItems
+            }
+          }
+        },
+
+        _computeHasChildren: function(children) {
+          if (children.length) {
+            return true;
+          }
+          return false;
+        }
+      });
+    })();
+  </script>
+</dom-module>

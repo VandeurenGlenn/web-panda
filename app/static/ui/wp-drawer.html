@@ -1,0 +1,27 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<dom-module id="wp-drawer">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex: 1;
+        height: 100%;
+        width: 100%;
+        background: var(--primary-background-color, #EFEFEF);
+      }
+    </style>
+
+    <content select="wp-toolbar, [toolbar]"></content>
+    <content></content>
+
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'wp-drawer'
+      });
+    })();
+  </script>
+</dom-module>

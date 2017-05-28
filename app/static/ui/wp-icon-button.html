@@ -1,0 +1,72 @@
+<link rel="import" href="../bower_components/polymer/polymer-mini.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="wp-icons.html">
+<dom-module id="wp-icon-button">
+  <template>
+    <style>
+      :host {
+        display: block;
+        padding: 8px;
+        box-sizing: border-box;
+        cursor: pointer;
+        border-radius: 3px;
+      }
+      :host([circle]) {
+        border-radius: 50%;
+      }
+      :host([over]) {
+        @apply(--over-shadow);
+      }
+      :host([pressed]) {
+        @apply(--pressed-shadow);
+      }
+    </style>
+    <iron-icon icon="[[icon]]"></iron-icon>
+  </template>
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'wp-icon-button',
+
+        properties: {
+          icon: String,
+          over: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true
+          },
+          pressed: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true
+          }
+        },
+
+        listeners: {
+          down: '_onDown',
+          up: '_onUp',
+          mouseover: '_onMouseOver',
+          mouseout: '_onMouseOut'
+        },
+
+        _onDown: function() {
+          this.set('pressed', true);
+        },
+
+        _onUp: function(event) {
+          this.set('pressed', false);
+        },
+
+        _onMouseOver: function(event) {
+          this.set('over', true);
+        },
+
+        _onMouseOut: function(event) {
+          this.set('over', false);
+        }
+      });
+    })();
+  </script>
+</dom-module>
